@@ -6,13 +6,12 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:04:31 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/17 14:03:14 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:23:01 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-// ESC pressed or the X on the window
 int	close_handler(t_fractal *fractal)
 {
 	mlx_destroy_image(fractal->mlx_connection, fractal->img->img_ptr);
@@ -23,41 +22,70 @@ int	close_handler(t_fractal *fractal)
 	exit(EXIT_SUCCESS);
 }
 
-// Keypress prototype
-// int (*f)(int keycode, t_fractal *fractal)
 int	key_handler(int keysym, t_fractal *fractal)
 {
 	if (keysym == XK_Escape)
 		close_handler(fractal);
-	if (keysym == XK_Left)
+	if (keysym == XK_a)
 		fractal->shift_x -= (0.5 * fractal->zoom);
-	else if (keysym == XK_Right)
+	else if (keysym == XK_d)
 		fractal->shift_x += (0.5 * fractal->zoom);
-	else if (keysym == XK_Up)
+	else if (keysym == XK_w)
 		fractal->shift_y += (0.5 * fractal->zoom);
-	else if (keysym == XK_Down)
+	else if (keysym == XK_s)
 		fractal->shift_y -= (0.5 * fractal->zoom);
-	else if (keysym == XK_equal) // cheking for equal sign =
+	else if (keysym == XK_Up)
 		fractal->iterations += 10;
-	else if (keysym == XK_minus) // cheking for minus sign -
+	else if (keysym == XK_Down)
 		fractal->iterations -= 10;
-	// refresh the image
 	fractal_render(fractal);
 	return (0);
 }
 
-// int (*f)(int button, int x, int y, void *param)
 int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 {
-	// Zoom-in
+	double	mouse_re_before;
+	double	mouse_im_before;
+	double	mouse_re_after;
+	double	mouse_im_after;
+
+	mouse_re_before = (map((t_map_coords){x, -2, +2, 0, WIDTH})
+			* fractal->zoom) + fractal->shift_x;
+	mouse_im_before = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
+			* fractal->zoom) + fractal->shift_y;
 	if (button == Button4)
-	{
 		fractal->zoom *= 0.95;
-	}
-	// Zoom-out
 	else if (button == Button5)
-	{
 		fractal->zoom *= 1.05;
+	else
+		return (0);
+	mouse_re_after = (map((t_map_coords){x, -2, +2, 0, WIDTH})
+			* fractal->zoom) + fractal->shift_x;
+	mouse_im_after = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
+			* fractal->zoom) + fractal->shift_y;
+	fractal->shift_x += (mouse_re_before - mouse_re_after);
+	fractal->shift_y += (mouse_im_before - mouse_im_after);
+	fractal_render(fractal);
+	return (0);
+}
+
+int	mouse_release_handler(int button, int x, int y, t_fractal *fractal)
+{
+	(void)x;
+	(void)y;
+	if (button == Button1)
+		fractal->is_mouse_down = 0;
+	return (0);
+}
+
+int	julia_tracing(int x, int y, t_fractal *fractal)
+{
+	if (!ft_strncmp(fractal->name, "julia", 5) && fractal->is_mouse_down == 1)
+	{
+		fractal->julia_x = (map((t_map_coords){x, -2, +2, 0, WIDTH})
+				* fractal->zoom) + fractal->shift_x;
+		fractal->julia_y = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
+				* fractal->zoom) + fractal->shift_y;
 	}
 	fractal_render(fractal);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 14:17:21 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/17 14:11:42 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 11:49:17 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,26 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 
-# define ERROR_MESSAGE "\tTry:\n./fractol mandelbrot \n\tor \n./fractol julia <value1> <value2>\n"
-
 # define WIDTH 800
 # define HEIGHT 800
 
 //Colors
-#define BLACK			0x000000
-#define WHITE			0xFFFFFF
-#define GREEN			0x00FF00 
-#define BLUE			0x0000FF 
-#define MAGENTA			0xFF00FF 
-#define LIME			0xCCFF00 
-#define ORANGE			0xFF6600
-#define PURPLE			0x9932CC 
-#define AQUA			0x33CCCC
-#define PINK			0xFF66B2
-#define ELECTRIC		0x0066FF
-#define LIGHTENING		0x00CCFF
-#define LAVA			0xFF3300
-#define YELLOW			0xFFFF00 
-#define PASTELYELLOW	0xFFFF99
-#define	PASTELPINK		0xFFB6C1
+# define BLACK			0x000000
+# define WHITE			0xFFFFFF
+# define GREEN			0x00FF00 
+# define BLUE			0x0000FF 
+# define MAGENTA		0xFF00FF 
+# define LIME			0xCCFF00 
+# define ORANGE			0xFF6600
+# define PURPLE			0x9932CC 
+# define AQUA			0x33CCCC
+# define PINK			0xFF66B2
+# define ELECTRIC		0x0066FF
+# define LIGHTENING		0x00CCFF
+# define LAVA			0xFF3300
+# define YELLOW			0xFFFF00 
+# define PASTELYELLOW	0xFFFF99
+# define PASTELPINK		0xFFB6C1
 
 // Complex values
 typedef struct s_complex
@@ -78,6 +76,7 @@ typedef struct s_fractal
 	double	zoom;
 	double	julia_x;
 	double	julia_y;
+	int		is_mouse_down;
 	//HOOKS
 }	t_fractal;
 
@@ -92,21 +91,22 @@ typedef struct s_map_coords
 }	t_map_coords;
 
 // init
-void	fractal_init(t_fractal *fractal);
+void		fractal_init(t_fractal *fractal);
 
 // render
-void	fractal_render(t_fractal *fractal);
+void		fractal_render(t_fractal *fractal);
 
 // events
-int	key_handler(int keysym, t_fractal *fractal);
-int	mouse_handler(int button, int x, int y, t_fractal *fractal);
-int	close_handler(t_fractal *fractal);
+int			key_handler(int keysym, t_fractal *fractal);
+int			mouse_handler(int button, int x, int y, t_fractal *fractal);
+int			close_handler(t_fractal *fractal);
+int			mouse_release_handler(int button, int x, int y, t_fractal *fractal);
+int			julia_tracing(int x, int y, t_fractal *fractal);
 
 // math
-double map(t_map_coords coords);
+double		map(t_map_coords coords);
 t_complex	sum_complex(t_complex z1, t_complex z2);
 t_complex	square_complex(t_complex z);
-
-double	atod(char *s);
+double		atod(char *s);
 
 #endif
