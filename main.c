@@ -6,7 +6,7 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 14:39:24 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/18 12:02:41 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:55:18 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ int	main(int ac, char **av)
 {
 	t_fractal	fractal;
 
-	if (((ac == 2) && !ft_strncmp(av[1], "mandelbrot", 10))
-		|| ((ac == 4) && !ft_strncmp(av[1], "julia", 5)))
+	if (((ac == 2) && !ft_strncmp(av[1], "mandelbrot", 10)
+			&& ft_strlen(av[1]) == 10)
+		|| ((ac == 4) && !ft_strncmp(av[1], "julia", 5)
+			&& ft_strlen(av[1]) == 5))
 	{
 		fractal.name = av[1];
 		if (ac == 4)
