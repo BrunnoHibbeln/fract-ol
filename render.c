@@ -6,7 +6,7 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 09:49:58 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/18 12:11:20 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:09:11 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ static void	choose_set(t_complex *z, t_complex *c, t_fractal *fractal)
 	}
 }
 
+static int	get_color(int i, t_fractal *fractal)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	if (i == fractal->iterations)
+		return (BLACK);
+	r = (i * 9) % 255;
+	g = (i * 15) % 255;
+	b = (i * 255) % 255;
+	return (r << 16 | g << 8 | b);
+}
+
 // Fixed parameter order: (x, y) instead of (y, x)
 static void	handle_pixel(int x, int y, t_fractal *fractal)
 {
@@ -43,7 +57,6 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 	t_complex	c;
 	double		value;
 	int			i;
-	int			color;
 
 	i = -1;
 	c.r = (map((t_map_coords){x, -2, +2, 0, WIDTH})
@@ -57,9 +70,7 @@ static void	handle_pixel(int x, int y, t_fractal *fractal)
 		value = (z.r * z.r) + (z.i * z.i);
 		if (value > fractal->escape_value)
 		{
-			color = map((t_map_coords)
-				{i, BLACK, WHITE, 0, fractal->iterations});
-			ft_pixel_put(x, y, fractal->img, color);
+			ft_pixel_put(x, y, fractal->img, get_color(i, fractal));
 			return ;
 		}
 	}
