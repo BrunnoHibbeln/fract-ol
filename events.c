@@ -6,7 +6,7 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:04:31 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/18 13:25:22 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 14:42:43 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,14 @@ int	key_handler(int keysym, t_fractal *fractal)
 
 int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 {
-	double	mouse_re_before;
-	double	mouse_im_before;
-	double	mouse_re_after;
-	double	mouse_im_after;
-
+	(void)x;
+	(void)y;
 	if (button == Button1)
 		fractal->is_mouse_down = 1;
-	mouse_re_before = (map((t_map_coords){x, -2, +2, 0, WIDTH})
-			* fractal->zoom) + fractal->shift_x;
-	mouse_im_before = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
-			* fractal->zoom) + fractal->shift_y;
-	if (button == Button4)
+	else if (button == Button4)
 		fractal->zoom *= 0.95;
 	else if (button == Button5)
 		fractal->zoom *= 1.05;
-	else
-		return (0);
-	mouse_re_after = (map((t_map_coords){x, -2, +2, 0, WIDTH})
-			* fractal->zoom) + fractal->shift_x;
-	mouse_im_after = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
-			* fractal->zoom) + fractal->shift_y;
-	fractal->shift_x += (mouse_re_before - mouse_re_after);
-	fractal->shift_y += (mouse_im_before - mouse_im_after);
 	fractal_render(fractal);
 	return (0);
 }
@@ -88,7 +73,7 @@ int	julia_tracing(int x, int y, t_fractal *fractal)
 				* fractal->zoom) + fractal->shift_x;
 		fractal->julia_y = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
 				* fractal->zoom) + fractal->shift_y;
+		fractal_render(fractal);
 	}
-	fractal_render(fractal);
 	return (0);
 }
