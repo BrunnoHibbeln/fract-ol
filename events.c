@@ -6,7 +6,7 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:04:31 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/18 12:23:01 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:25:22 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	mouse_handler(int button, int x, int y, t_fractal *fractal)
 	double	mouse_re_after;
 	double	mouse_im_after;
 
+	if (button == Button1)
+		fractal->is_mouse_down = 1;
 	mouse_re_before = (map((t_map_coords){x, -2, +2, 0, WIDTH})
 			* fractal->zoom) + fractal->shift_x;
 	mouse_im_before = (map((t_map_coords){y, +2, -2, 0, HEIGHT})
