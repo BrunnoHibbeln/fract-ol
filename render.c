@@ -6,7 +6,7 @@
 /*   By: bhibbeln <bhibbeln@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 09:49:58 by bhibbeln          #+#    #+#             */
-/*   Updated: 2025/12/18 13:09:11 by bhibbeln         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:18:15 by bhibbeln         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ static void	choose_set(t_complex *z, t_complex *c, t_fractal *fractal)
 
 static int	get_color(int i, t_fractal *fractal)
 {
-	int	r;
-	int	g;
-	int	b;
+	double	t;
+	int		r;
+	int		g;
+	int		b;
 
-	if (i == fractal->iterations)
-		return (BLACK);
-	r = (i * 9) % 255;
-	g = (i * 15) % 255;
-	b = (i * 255) % 255;
-	return (r << 16 | g << 8 | b);
+	t = (double)i / fractal->iterations;
+	r = (int)(9 * (1 - t) * t * t * t * 255);
+	g = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
+	b = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+	return ((r << 16) | (g << 8) | b);
 }
 
 // Fixed parameter order: (x, y) instead of (y, x)
